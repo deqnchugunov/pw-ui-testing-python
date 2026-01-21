@@ -14,11 +14,11 @@ def browser_context():
     
     with sync_playwright() as p:
         # Launch browser with configured options
-        browser = p.chromium.launch(**Config.get_browser_options())
+        browser = p.chromium.launch(headless=Config.HEADLESS, slow_mo=Config.SLOW_MO, timeout=Config.TIMEOUT)
         context = browser.new_context()
         
         # Set viewport
-        context.set_viewport_size(Config.get_browser_options()['viewport'])
+        # context.set_viewport_size({'width': Config.VIEWPORT_WIDTH, 'height': Config.VIEWPORT_HEIGHT})
         
         yield context
         
@@ -56,13 +56,12 @@ def test_setup_and_teardown(request, page):
     
     # Teardown - take screenshot on failure
     if request.node.rep_call.failed:
+        screenshot_path = f"screenshots/{request.node.name}_failed.png"
         try:
-            screenshot_path = f"screenshots/{request.node.name}_failed.png"
             page.screenshot(path=screenshot_path, full_page=True)
             test_logger.error(f"Screenshot saved for failed test: {screenshot_path}")
         except Exception as e:
             test_logger.error(f"Failed to save screenshot: {e}")
-            # Continue execution even if screenshot fails
 
 # Add pytest hook for better reporting
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)

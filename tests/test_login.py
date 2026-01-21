@@ -1,6 +1,5 @@
 import pytest
 from pages.login_page import LoginPage
-from pages.dashboard_page import DashboardPage
 from utils.constants import TestData, Locators
 
 @pytest.mark.smoke
