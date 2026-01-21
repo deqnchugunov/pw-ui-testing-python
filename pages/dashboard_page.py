@@ -1,4 +1,6 @@
 from pages.base_page import BasePage
+from pages.login_page import LoginPage
+from pages.dashboard_page import DashboardPage
 from utils.constants import Locators
 from playwright.sync_api import Page
 
@@ -19,7 +21,7 @@ class DashboardPage(BasePage):
         """Get welcome message text"""
         return self.get_text_content(".welcome-message")
     
-    def logout(self) -> "LoginPage":
+    def logout(self) -> LoginPage:
         """Logout from dashboard"""
         self.wait_and_click(Locators.USER_MENU)
         self.wait_and_click(Locators.LOGOUT_LINK)
@@ -29,7 +31,7 @@ class DashboardPage(BasePage):
         """Check if user menu is visible"""
         return self.is_element_visible(Locators.USER_MENU)
     
-    def wait_for_dashboard_load(self) -> "DashboardPage":
+    def wait_for_dashboard_load(self) -> DashboardPage:
         """Wait for dashboard to fully load"""
         self.wait_for_load_state()
         self.wait_for_element(".welcome-message")
